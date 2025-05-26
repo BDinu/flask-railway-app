@@ -5,6 +5,7 @@ from flask_cors import CORS
 import mysql.connector
 import requests
 import io
+import os
 import csv
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -28,13 +29,13 @@ def dashboard():
     return render_template('dashboard.html')
 
 # Configurare DB
-db_config = {
-    'host': 'mysql.railway.internal',
-    'user': 'root',
-    'password': 'PMsqoHJPkwDPlBwwbnYtrhLPlBFAGJGK',
-    'database': 'railway',
-    'port': 3306
-}
+connection = mysql.connector.connect(
+    host=os.environ.get("MYSQL_HOST"),
+    user=os.environ.get("MYSQL_USER"),
+    password=os.environ.get("MYSQL_PASSWORD"),
+    database=os.environ.get("MYSQL_DATABASE"),
+    port=int(os.environ.get("MYSQL_PORT", 3306))
+)
 
 OPENWEATHER_API_KEY = 'e86a21e5e7ee35cc87a7aec4cacc3365'
 OPENCAGE_API_KEY = 'ce2f5a5e6b314cb684dbe8370195345d'
