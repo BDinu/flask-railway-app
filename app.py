@@ -666,4 +666,5 @@ def plot_all_graphs():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # ia portul din mediu sau pune 5000 ca fallback
+    app.run(host="0.0.0.0", port=port, debug=True)
