@@ -5,7 +5,6 @@ from flask_cors import CORS
 import mysql.connector
 import requests
 import io
-import os
 import csv
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -29,13 +28,13 @@ def dashboard():
     return render_template('dashboard.html')
 
 # Configurare DB
-connection = mysql.connector.connect(
-    host=os.environ.get("MYSQL_HOST"),
-    user=os.environ.get("MYSQL_USER"),
-    password=os.environ.get("MYSQL_PASSWORD"),
-    database=os.environ.get("MYSQL_DATABASE"),
-    port=int(os.environ.get("MYSQL_PORT", 3306))
-)
+db_config = {
+    'host': 'sql7.freesqldatabase.com',
+    'user': 'sql7781154',
+    'password': 'Xxpsy1T8b7',
+    'database': 'sql7781154',
+    'port': 3306
+}
 
 OPENWEATHER_API_KEY = 'e86a21e5e7ee35cc87a7aec4cacc3365'
 OPENCAGE_API_KEY = 'ce2f5a5e6b314cb684dbe8370195345d'
@@ -667,5 +666,4 @@ def plot_all_graphs():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # ia portul din mediu sau pune 5000 ca fallback
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(debug=True)
