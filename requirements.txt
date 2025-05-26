@@ -6,3 +6,4 @@ mysql-connector-python
 requests
 matplotlib
 numpy
+gunicorn
