@@ -29,10 +29,10 @@ def dashboard():
 
 # Configurare DB
 db_config = {
-    'host': 'sql7.freesqldatabase.com',
-    'user': 'sql7781154',
-    'password': 'Xxpsy1T8b7',
-    'database': 'sql7781154',
+    'host': 'mysql.railway.internal',
+    'user': 'root',
+    'password': 'PMsqoHJPkwDPlBwwbnYtrhLPlBFAGJGK',
+    'database': 'railway',
     'port': 3306
 }
 
