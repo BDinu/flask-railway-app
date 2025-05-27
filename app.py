@@ -21,9 +21,9 @@ bcrypt = Bcrypt(app)
 CORS(app)
 
 @app.route('/')
-def login():
+def home():
+    # Păstrăm numele fișierului HTML ca 'login.html' conform cerinței
     return render_template('login.html')
-
 
 @app.route('/dashboard')
 def dashboard():
