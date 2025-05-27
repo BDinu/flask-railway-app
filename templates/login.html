@@ -1,481 +1,1068 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather & Air Quality App</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
     <style>
-        /* Definirea culorilor pentru modul deschis - mai intense */
-        :root {
-            --light-bg: #f0f4f8; /* Fundal foarte deschis, ușor albăstrui */
-            --light-text: #2c3e50; /* Text închis, profesional */
-            --light-card-bg: #ffffff; /* Carduri albe și curate */
-            --light-border: #d5e0ea; /* Bordură clară, dar subtilă */
-            --light-primary: #3498db; /* Un albastru vibrant, clasic */
-            --light-primary-hover: #2980b9; /* Albastru mai închis pentru hover */
-            --light-success: #2ecc71; /* Un verde proaspăt, energic */
-            --light-success-hover: #27ae60; /* Verde mai închis pentru hover */
-            --light-secondary: #95a5a6; /* Gri neutru pentru butoane secundare */
-            --light-secondary-hover: #7f8c8d; /* Gri mai închis pentru hover */
-            --light-info: #3498db; /* Reutilizăm albastrul primar pentru info, consistență */
-            --light-info-hover: #2980b9;
-            --light-danger: #e74c3c; /* Roșu puternic pentru erori/atenționări */
-            --light-danger-hover: #c0392b; /* Roșu mai închis pentru hover */
-            --light-link: #3498db; /* Link-uri în culoarea primară */
-            --light-shadow: rgba(0, 0, 0, 0.08); /* Umbre mai pronunțate, dar elegante */
-        }
+    /* Definirea culorilor pentru modul deschis - mai intense */
+    :root {
+        --light-bg: #f0f4f8; /* Fundal foarte deschis, ușor albăstrui */
+        --light-text: #2c3e50; /* Text închis, profesional */
+        --light-card-bg: #ffffff; /* Carduri albe și curate */
+        --light-border: #d5e0ea; /* Bordură clară, dar subtilă */
+        --light-primary: #3498db; /* Un albastru vibrant, clasic */
+        --light-primary-hover: #2980b9; /* Albastru mai închis pentru hover */
+        --light-success: #2ecc71; /* Un verde proaspăt, energic */
+        --light-success-hover: #27ae60; /* Verde mai închis pentru hover */
+        --light-secondary: #95a5a6; /* Gri neutru pentru butoane secundare */
+        --light-secondary-hover: #7f8c8d; /* Gri mai închis pentru hover */
+        --light-info: #3498db; /* Reutilizăm albastrul primar pentru info, consistență */
+        --light-info-hover: #2980b9;
+        --light-danger: #e74c3c; /* Roșu puternic pentru erori/atenționări */
+        --light-danger-hover: #c0392b; /* Roșu mai închis pentru hover */
+        --light-link: #3498db; /* Link-uri în culoarea primară */
+        --light-shadow: rgba(0, 0, 0, 0.08); /* Umbre mai pronunțate, dar elegante */
 
-        /* Definirea culorilor pentru modul întunecat - cu margini mai vizibile */
-        [data-bs-theme="dark"] {
-            --dark-bg: #212c3b; /* Fundal întunecat, albastru-cenușiu adânc */
-            --dark-text: #e0e6eb; /* Text deschis, ușor gri pentru lizibilitate */
-            --dark-card-bg: #2c3e50; /* Carduri mai închise decât fundalul */
-            --dark-border: #4a627a; /* Bordură distinctă pentru elemente */
-            --dark-primary: #3498db; /* Același albastru vibrant, se vede bine pe întunecat */
-            --dark-primary-hover: #5faee3; /* Albastru mai deschis pentru hover în dark mode */
-            --dark-success: #2ecc71; /* Același verde proaspăt */
-            --dark-success-hover: #56e390; /* Verde mai deschis pentru hover în dark mode */
-            --dark-secondary: #95a5a6; /* Același gri */
-            --dark-secondary-hover: #b0c0c1; /* Gri mai deschis pentru hover în dark mode */
-            --dark-info: #3498db; /* Același albastru */
-            --dark-info-hover: #5faee3;
-            --dark-danger: #e74c3c; /* Același roșu */
-            --dark-danger-hover: #ff786e; /* Roșu mai deschis pentru hover în dark mode */
-            --dark-link: #5faee3; /* Link-uri mai deschise pentru vizibilitate */
-            --dark-shadow: rgba(0, 0, 0, 0.4); /* Umbre mai adânci */
+        /* Culori specifice pentru Dashboard */
+        --dash-header-bg-primary: #3498db; /* Albastru primar */
+        --dash-header-bg-info: #2ecc71;    /* Verde success */
+        --dash-header-bg-success: #e67e22; /* Portocaliu pentru "Add Manual" */
+        --dash-header-bg-secondary: #95a5a6; /* Gri neutru pentru "Data Visualization" */
 
-            background-color: var(--dark-bg);
-            color: var(--dark-text);
-        }
+        --dash-table-header-bg: #2c3e50; /* Fundal antet tabel, un gri-albastru închis */
+        --dash-table-row-even: #f5f8fb;
+        --dash-table-row-hover: #e0eaf3;
+    }
 
-        /* Stiluri generale pentru corp și tranziții */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-bg);
-            color: var(--light-text);
-            transition: background-color 0.4s ease, color 0.4s ease;
-        }
+    /* Definirea culorilor pentru modul întunecat - cu margini mult mai vizibile */
+    body.dark-mode {
+        --light-bg: #212c3b; /* Fundal întunecat, albastru-cenușiu adânc */
+        --light-text: #e0e6eb; /* Text deschis, ușor gri pentru lizibilitate */
+        --light-card-bg: #2c3e50; /* Carduri mai închise decât fundalul */
+        --light-border: #6a88b0; /* Bordură foarte distinctă pentru elemente în dark mode */
+        --light-primary: #3498db; /* Același albastru vibrant, se vede bine pe întunecat */
+        --light-primary-hover: #5faee3; /* Albastru mai deschis pentru hover în dark mode */
+        --light-success: #2ecc71; /* Același verde proaspăt */
+        --light-success-hover: #56e390; /* Verde mai deschis pentru hover în dark mode */
+        --light-secondary: #95a5a6; /* Același gri */
+        --light-secondary-hover: #b0c0c1; /* Gri mai deschis pentru hover în dark mode */
+        --light-info: #3498db; /* Același albastru */
+        --light-info-hover: #5faee3;
+        --light-danger: #e74c3c; /* Același roșu */
+        --light-danger-hover: #ff786e; /* Roșu mai deschis pentru hover în dark mode */
+        --light-link: #5faee3; /* Link-uri mai deschise pentru vizibilitate */
+        --light-shadow: rgba(0, 0, 0, 0.4); /* Umbre mai adânci */
 
-        /* Stiluri pentru carduri */
-        .card {
-            background-color: var(--light-card-bg);
-            border: 1px solid var(--light-border); /* Border vizibil */
-            border-radius: 8px;
-            box-shadow: 0 6px 16px var(--light-shadow); /* Umbra îmbunătățită */
-            transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-        }
-        [data-bs-theme="dark"] .card {
-            background-color: var(--dark-card-bg);
-            border-color: var(--dark-border); /* Border mai pronunțat în dark mode */
-            box-shadow: 0 6px 16px var(--dark-shadow);
-        }
+        /* Culori specifice pentru Dashboard - Dark Mode */
+        --dash-header-bg-primary: #2980b9; /* Albastru primar mai închis */
+        --dash-header-bg-info: #27ae60;    /* Verde success mai închis */
+        --dash-header-bg-success: #d35400; /* Portocaliu mai închis */
+        --dash-header-bg-secondary: #7f8c8d; /* Gri neutru mai închis */
 
-        /* Stiluri pentru butoane - tranziții fine și efect de transformare */
-        .btn { /* Aplicăm stiluri generice pentru toate butoanele Bootstrap */
-            border-radius: 5px;
-            font-weight: 500;
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-        }
+        --dash-table-header-bg: #1c2a39; /* Fundal antet tabel, și mai închis */
+        --dash-table-row-even: #3a4b60;
+        --dash-table-row-hover: #4b607a;
+    }
 
-        /* Culori de bază pentru butoane în light mode */
-        .btn-primary { background-color: var(--light-primary); border-color: var(--light-primary); color: white; }
-        .btn-success { background-color: var(--light-success); border-color: var(--light-success); color: white; }
-        .btn-secondary { background-color: var(--light-secondary); border-color: var(--light-secondary); color: white; }
-        .btn-info { background-color: var(--light-info); border-color: var(--light-info); color: white; }
-        .btn-danger { background-color: var(--light-danger); border-color: var(--light-danger); color: white; }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light-bg);
+        color: var(--light-text);
+        transition: background-color 0.4s ease, color 0.4s ease;
+        line-height: 1.6;
+    }
+    .container {
+        background-color: var(--light-card-bg);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 25px var(--light-shadow); /* Enhanced shadow */
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    h1, h3 {
+        color: var(--light-text);
+        font-weight: 700; /* Bolder headings */
+        margin-bottom: 1rem;
+        transition: color 0.4s ease;
+    }
+    .btn { /* Aplicăm stiluri generice pentru toate butoanele Bootstrap */
+        border-radius: 8px;
+        padding: 10px 22px; /* Slightly larger padding */
+        font-weight: 600; /* Bolder button text */
+        color: white;
+        transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, transform 0.2s ease;
+    }
+    .btn:hover {
+        transform: translateY(-2px); /* Efect de ridicare la hover */
+    }
 
-        /* Culori de hover pentru butoane în light mode */
-        .btn-primary:hover { background-color: var(--light-primary-hover); border-color: var(--light-primary-hover); transform: translateY(-2px); }
-        .btn-success:hover { background-color: var(--light-success-hover); border-color: var(--light-success-hover); transform: translateY(-2px); }
-        .btn-secondary:hover { background-color: var(--light-secondary-hover); border-color: var(--light-secondary-hover); transform: translateY(-2px); }
-        .btn-info:hover { background-color: var(--light-info-hover); border-color: var(--light-info-hover); transform: translateY(-2px); }
-        .btn-danger:hover { background-color: var(--light-danger-hover); border-color: var(--light-danger-hover); transform: translateY(-2px); }
+    /* Culori de bază și hover pentru butoane */
+    .btn-primary { background-color: var(--light-primary); border-color: var(--light-primary); }
+    .btn-primary:hover { background-color: var(--light-primary-hover); border-color: var(--light-primary-hover); }
 
-        /* Stiluri specifice pentru butoanele în dark mode */
-        [data-bs-theme="dark"] .btn-primary { background-color: var(--dark-primary); border-color: var(--dark-primary); }
-        [data-bs-theme="dark"] .btn-primary:hover { background-color: var(--dark-primary-hover); border-color: var(--dark-primary-hover); }
+    .btn-success { background-color: var(--light-success); border-color: var(--light-success); }
+    .btn-success:hover { background-color: var(--light-success-hover); border-color: var(--light-success-hover); }
+    /* Asigură că #store-weather-data primește stilul de hover al btn-success */
+    #store-weather-data:hover {
+        background-color: var(--light-success-hover) !important;
+        border-color: var(--light-success-hover) !important;
+    }
 
-        [data-bs-theme="dark"] .btn-success { background-color: var(--dark-success); border-color: var(--dark-success); }
-        [data-bs-theme="dark"] .btn-success:hover { background-color: var(--dark-success-hover); border-color: var(--dark-success-hover); }
+    /* Stil pentru butonul Toggle Dark Mode */
+    #dark-mode-toggle {
+        border-color: var(--light-secondary);
+        color: var(--light-text); /* Culoarea textului de bază */
+        background-color: transparent;
+    }
+    #dark-mode-toggle:hover {
+        background-color: var(--light-secondary);
+        color: white; /* Text alb la hover */
+        border-color: var(--light-secondary);
+    }
+    body.dark-mode #dark-mode-toggle {
+        border-color: var(--light-secondary);
+        color: var(--light-text);
+    }
+    body.dark-mode #dark-mode-toggle:hover {
+        background-color: var(--light-secondary);
+        color: white;
+        border-color: var(--light-secondary);
+    }
 
-        [data-bs-theme="dark"] .btn-secondary { background-color: var(--dark-secondary); border-color: var(--dark-secondary); }
-        [data-bs-theme="dark"] .btn-secondary:hover { background-color: var(--dark-secondary-hover); border-color: var(--dark-secondary-hover); }
 
-        [data-bs-theme="dark"] .btn-info { background-color: var(--dark-info); border-color: var(--dark-info); }
-        [data-bs-theme="dark"] .btn-info:hover { background-color: var(--dark-info-hover); border-color: var(--dark-info-hover); }
+    .form-control {
+        border-radius: 8px;
+        background-color: var(--light-card-bg);
+        color: var(--light-text);
+        border: 1px solid var(--light-border);
+        padding: 10px 15px; /* Consistent padding */
+        transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+    }
+    .form-control::placeholder {
+        color: var(--light-text);
+        opacity: 0.7;
+    }
+    body.dark-mode .form-control {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+        background-color: var(--light-card-bg);
+        color: var(--light-text);
+    }
+    body.dark-mode .form-control::placeholder {
+        color: var(--light-text);
+        opacity: 0.7;
+    }
+    .form-label {
+        font-weight: 500;
+        color: var(--light-text);
+        transition: color 0.4s ease;
+    }
+    body.dark-mode .form-label {
+        color: var(--light-text);
+    }
 
-        [data-bs-theme="dark"] .btn-danger { background-color: var(--dark-danger); border-color: var(--dark-danger); }
-        [data-bs-theme="dark"] .btn-danger:hover { background-color: var(--dark-danger-hover); border-color: var(--dark-danger-hover); }
+    #weather-result p {
+        margin-bottom: 8px; /* Slightly more space */
+        color: var(--light-text);
+        transition: color 0.4s ease;
+    }
+    #map-container {
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--light-border);
+        box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05); /* Subtle inner shadow */
+    }
+    body.dark-mode #map-container {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+        box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        /* Stil pentru butonul Toggle Dark Mode */
-        .btn-outline-secondary {
-            border-color: var(--light-secondary);
-            color: var(--light-text); /* Culoarea textului de bază */
-            background-color: transparent; /* Asigură că este transparent */
-        }
-        .btn-outline-secondary:hover {
-            background-color: var(--light-secondary);
-            color: white; /* Text alb la hover */
-            border-color: var(--light-secondary);
-        }
-        [data-bs-theme="dark"] .btn-outline-secondary {
-            border-color: var(--dark-secondary);
-            color: var(--dark-text);
-        }
-        [data-bs-theme="dark"] .btn-outline-secondary:hover {
-            background-color: var(--dark-secondary);
-            color: white;
-            border-color: var(--dark-secondary);
-        }
+    #measurements-table thead th {
+        background-color: var(--dash-table-header-bg);
+        color: #ffffff;
+        font-weight: 600;
+        vertical-align: middle;
+        padding: 12px 8px; /* More padding */
+        border: 1px solid var(--light-border); /* Border for table headers */
+    }
+    body.dark-mode #measurements-table thead th {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+    }
 
-        /* Stiluri pentru link-uri */
-        a {
-            color: var(--light-link);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        a:hover {
-            color: var(--light-primary-hover);
-            text-decoration: underline;
-        }
-        [data-bs-theme="dark"] a {
-            color: var(--dark-link);
-        }
-        [data-bs-theme="dark"] a:hover {
-            color: var(--dark-primary-hover);
-        }
+    #measurements-table tbody tr {
+        color: var(--light-text);
+        transition: background-color 0.2s ease, color 0.3s ease;
+    }
+    #measurements-table tbody tr:nth-child(even) {
+        background-color: var(--dash-table-row-even);
+    }
+    #measurements-table tbody tr:hover {
+        background-color: var(--dash-table-row-hover);
+    }
+    body.dark-mode #measurements-table tbody tr {
+        color: var(--light-text);
+    }
+    body.dark-mode #measurements-table tbody tr:nth-child(even) {
+        background-color: var(--dash-table-row-even);
+    }
+    body.dark-mode #measurements-table tbody tr:hover {
+        background-color: var(--dash-table-row-hover);
+    }
 
-        /* Mesaje de notificare */
-        .message {
-            padding: 12px;
-            margin-top: 15px;
-            border-radius: 5px;
-            font-weight: 500;
-        }
-        .message.success {
-            background-color: rgba(46, 204, 113, 0.15); /* Verde cu opacitate */
-            color: var(--light-success);
-            border: 1px solid var(--light-success);
-        }
-        .message.error {
-            background-color: rgba(231, 76, 60, 0.15); /* Roșu cu opacitate */
-            color: var(--light-danger);
-            border: 1px solid var(--light-danger);
-        }
-        [data-bs-theme="dark"] .message.success {
-            background-color: rgba(46, 204, 113, 0.25);
-            color: var(--dark-success-hover);
-        }
-        [data-bs-theme="dark"] .message.error {
-            background-color: rgba(231, 76, 60, 0.25);
-            color: var(--dark-danger-hover);
-        }
+    .table-responsive {
+        border: 1px solid var(--light-border); /* Border around table responsive div */
+        border-radius: 8px;
+        overflow: hidden; /* Ensures border-radius is respected */
+    }
+    body.dark-mode .table-responsive {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+    }
 
-        /* Harta */
-        #map {
-            height: 300px;
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 20px;
-            border: 1px solid var(--light-border);
-            box-shadow: 0 2px 8px var(--light-shadow);
-        }
-        [data-bs-theme="dark"] #map {
-            border: 2px solid var(--dark-border); /* Margine mai groasă în dark mode */
-            box-shadow: 0 2px 8px var(--dark-shadow);
-        }
+    .card {
+        border: 1px solid var(--light-border); /* Adăugat border consistent */
+        border-radius: 12px;
+        box-shadow: 0 4px 15px var(--light-shadow); /* Lighter shadow for cards */
+        background-color: var(--light-card-bg);
+        transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    body.dark-mode .card {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+        background-color: var(--light-card-bg);
+        box-shadow: 0 4px 15px var(--light-shadow);
+    }
 
-        /* Stiluri suplimentare pentru inputuri și etichete */
-        .form-control {
-            border-radius: 5px;
-            border: 1px solid var(--light-border);
-            background-color: var(--light-card-bg);
-            color: var(--light-text);
-            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
-        }
-        .form-control::placeholder {
-            color: var(--light-text);
-            opacity: 0.6;
-        }
-        [data-bs-theme="dark"] .form-control {
-            border: 1px solid var(--dark-border);
-            background-color: var(--dark-card-bg);
-            color: var(--dark-text);
-        }
-        [data-bs-theme="dark"] .form-control::placeholder {
-            color: var(--dark-text);
-            opacity: 0.6;
-        }
-        .form-label {
-            color: var(--light-text);
-            font-weight: 500;
-        }
-        [data-bs-theme="dark"] .form-label {
-            color: var(--dark-text);
-        }
+    .card-header {
+        color: white;
+        font-weight: 700;
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* O linie subtilă sub antet */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        transition: background-color 0.3s;
+    }
+    .card-header.bg-primary { background-color: var(--dash-header-bg-primary) !important; }
+    .card-header.bg-info { background-color: var(--dash-header-bg-info) !important; }
+    .card-header.bg-success { background-color: var(--dash-header-bg-success) !important; }
+    .card-header.bg-secondary { background-color: var(--dash-header-bg-secondary) !important; }
 
-        /* Stiluri pentru anteturi */
-        h2, h3, h4, h5, h6 {
-            color: var(--light-text);
-            transition: color 0.4s ease;
-        }
-        [data-bs-theme="dark"] h2, [data-bs-theme="dark"] h3, [data-bs-theme="dark"] h4, [data-bs-theme="dark"] h5, [data-bs-theme="dark"] h6 {
-            color: var(--dark-text);
-        }
-    </style>
+    body.dark-mode .card-header {
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* Linie mai groasă în dark mode */
+    }
+
+    .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 10px 40px var(--light-shadow);
+        background-color: var(--light-card-bg);
+        color: var(--light-text);
+        transition: background-color 0.3s, color 0.3s;
+        border: 1px solid var(--light-border); /* Border pentru modal */
+    }
+    body.dark-mode .modal-content {
+        background-color: var(--light-card-bg);
+        color: var(--light-text);
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+    }
+
+    .modal-header {
+        background-color: var(--dash-header-bg-primary); /* Culoarea primară pentru antetul modalului */
+        color: white;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 18px 25px;
+        transition: background-color 0.3s;
+    }
+    body.dark-mode .modal-header {
+        background-color: var(--dash-header-bg-primary); /* Același albastru primar mai închis */
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .modal-header .btn-close {
+        filter: invert(1);
+        font-size: 1.2rem;
+        opacity: 0.8;
+    }
+    .modal-footer {
+        border-top: 1px solid var(--light-border); /* Border pentru footer-ul modalului */
+        padding: 15px 25px;
+        transition: border-color 0.3s;
+    }
+    body.dark-mode .modal-footer {
+        border-top: 2px solid var(--light-border); /* Margine mai pronunțată */
+    }
+
+
+    .plot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjusted min-width */
+        gap: 25px; /* Increased gap */
+        margin-top: 30px;
+    }
+    .plot-item {
+        background-color: var(--light-card-bg);
+        border: 1px solid var(--light-border);
+        border-radius: 12px;
+        padding: 20px; /* More padding */
+        text-align: center;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.3s;
+    }
+    .plot-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    body.dark-mode .plot-item {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+    }
+    .plot-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background-color: var(--light-card-bg);
+        border: 1px solid var(--light-border); /* Border pentru imagini plot */
+        transition: border-color 0.3s, background-color 0.3s;
+    }
+    body.dark-mode .plot-item img {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+    }
+    .plot-item h6 {
+        color: var(--light-text);
+        font-weight: 600;
+        font-size: 1.1em;
+        transition: color 0.4s ease;
+    }
+
+    .stats-section h4 {
+        color: var(--light-primary); /* Culorile primare pentru titluri de secțiuni */
+        margin-top: 25px;
+        margin-bottom: 20px;
+        font-weight: 700;
+        transition: color 0.4s ease;
+    }
+    body.dark-mode .stats-section h4 {
+         color: var(--light-primary-hover); /* Un pic mai deschis în dark mode */
+    }
+
+    .stats-section ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    .stats-section ul li {
+        background-color: var(--dash-table-row-even);
+        border: 1px solid var(--light-border);
+        border-radius: 8px;
+        margin-bottom: 10px;
+        padding: 12px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.95em;
+        transition: background-color 0.2s ease, border-color 0.3s;
+    }
+    .stats-section ul li:hover {
+        background-color: var(--dash-table-row-hover);
+    }
+    body.dark-mode .stats-section ul li {
+        border: 2px solid var(--light-border); /* Margine mai pronunțată */
+    }
+    .stats-section ul li strong {
+        color: var(--light-text);
+        font-weight: 600;
+        transition: color 0.4s ease;
+    }
+    .stats-section ul li span {
+        color: var(--light-text);
+        font-size: 0.9em;
+        opacity: 0.8;
+        font-weight: 400;
+        transition: color 0.4s ease;
+    }
+    /* Asigură textul să nu devină invizibil în dark mode */
+    p.card-text {
+        color: var(--light-text); /* Asigură că toate paragrafele din carduri sunt lizibile */
+        transition: color 0.4s ease;
+    }
+    body.dark-mode p.card-text {
+        color: var(--light-text) !important;
+        opacity: 0.9; /* Asigură că nu e prea palid */
+    }
+    body.dark-mode .text-muted, body.dark-mode .text-info {
+        color: var(--light-text) !important;
+        opacity: 0.8;
+    }
+    body.dark-mode .alert {
+        background-color: rgba(var(--light-border), 0.2);
+        border-color: var(--light-border);
+        color: var(--light-text);
+    }
+</style>
 </head>
-<body data-bs-theme="light">
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Weather & Air Quality</h2>
-        <div>
-            <button id="toggleDarkMode" class="btn btn-outline-secondary btn-sm me-2">Toggle Dark Mode</button>
-            <button id="showLoginModalBtn" class="btn btn-primary">Login / Register</button>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-center flex-grow-1 mb-0">Dashboard Overview</h1>
+            <div class="d-flex align-items-center">
+                <button id="dark-mode-toggle" class="btn btn-secondary me-3">Toggle Dark Mode</button>
+                <button id="logout-btn" class="btn btn-danger">Logout</button>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">Weather & Air Quality Lookup</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text mb-4">Enter a city and country to fetch current weather and air quality data.</p>
+                        <form id="fetch-weather-form">
+                            <div class="mb-3">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" id="city" class="form-control" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" id="country" class="form-control" required />
+                            </div>
+                            <div class="d-flex justify-content-start align-items-center">
+                                <button type="submit" class="btn btn-primary">Fetch Data</button>
+                                <button type="button" id="store-weather-data" class="btn btn-success ms-2" disabled>Store Data</button>
+                            </div>
+                        </form>
+                        <div id="weather-result" class="mt-4"></div>
+                        <div
+                            id="map-container"
+                            class="mt-4"
+                            style="height: 350px; display: none;"
+                        >
+                            <iframe
+                                id="map-frame"
+                                style="width: 100%; height: 100%; border: none;"
+                                src=""
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title mb-0">Measurement History</h3>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text mb-4">View and manage all your stored weather and air quality measurements.</p>
+                        <button
+                            class="btn btn-danger mb-4"
+                            id="delete-all-measurements"
+                        >
+                            Delete All Measurements
+                        </button>
+                        <div class="table-responsive flex-grow-1" style="max-height: 450px; overflow-y: auto; overflow-x: auto;">
+                            <table
+                                class="table table-bordered table-striped table-hover table-sm"
+                                id="measurements-table"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>City</th>
+                                        <th>Country</th>
+                                        <th>Temp (°C)</th>
+                                        <th>Humidity (%)</th>
+                                        <th>Pressure (hPa)</th>
+                                        <th>PM2.5 (μg/m³)</th>
+                                        <th>PM10 (μg/m³)</th>
+                                        <th>CO (μg/m³)</th>
+                                        <th>NO2 (μg/m³)</th>
+                                        <th>SO2 (μg/m³)</th>
+                                        <th>O3 (μg/m³)</th>
+                                        <th>Condition</th>
+                                        <th>Timestamp</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="card-title mb-0">Add Manual Measurement</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Manually add a new weather or air quality measurement to your history. Useful for custom entries or historical data.</p>
+                        <button id="open-add-modal" class="btn btn-success mt-2">
+                            Add New Measurement
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-secondary text-white">
+                        <h3 class="card-title mb-0">Data Visualization & Export</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Generate insightful charts and view statistical summaries of your collected data. You can also export your raw data or analysis results.</p>
+                        <button class="btn btn-info mt-2" id="visualize-measurements">
+                            Visualize Data
+                        </button>
+                        <button class="btn btn-secondary ms-2 mt-2" id="export-measurements">
+                            Export Raw Data (CSV)
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="card p-4 shadow-sm mb-5">
-        <h3 class="mb-3">Căută Vremea și Calitatea Aerului</h3>
-        <div class="row g-3">
-            <div class="col-md-5">
-                <input type="text" id="publicCity" class="form-control" placeholder="Oraș" />
+    <div class="modal fade" id="addMeasurementModal" tabindex="-1" aria-labelledby="addMeasurementModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <form id="add-measurement-modal-form">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addMeasurementModalLabel">Add New Measurement</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="col-md-5">
-                <input type="text" id="publicCountry" class="form-control" placeholder="Țară" />
+            <div class="modal-body row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="modal-city" class="form-label">City</label>
+                        <input type="text" id="modal-city" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-country" class="form-label">Country</label>
+                        <input type="text" id="modal-country" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-temperature" class="form-label">Temperature (°C)</label>
+                        <input type="number" step="0.1" id="modal-temperature" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-humidity" class="form-label">Humidity (%)</label>
+                        <input type="number" step="0.1" id="modal-humidity" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-pressure" class="form-label">Pressure (hPa)</label>
+                        <input type="number" step="0.1" id="modal-pressure" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-condition" class="form-label">Condition</label>
+                        <input type="text" id="modal-condition" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="modal-pm25" class="form-label">PM2.5 (μg/m³)</label>
+                        <input type="number" step="0.1" id="modal-pm25" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-pm10" class="form-label">PM10 (μg/m³)</label>
+                        <input type="number" step="0.1" id="modal-pm10" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-co" class="form-label">CO (μg/m³)</label>
+                        <input type="number" step="0.1" id="modal-co" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-no2" class="form-label">NO2 (μg/m³)</label>
+                        <input type="number" step="0.1" id="modal-no2" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-so2" class="form-label">SO2 (μg/m³)</label>
+                        <input type="number" step="0.1" id="modal-so2" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal-o3" class="form-label">O3 (μg/m³)</label>
+                        <input type="number" step="0.1" id="modal-o3" class="form-control" />
+                    </div>
+                </div>
             </div>
-            <div class="col-md-2">
-                <button id="fetchPublicWeatherBtn" class="btn btn-primary w-100">Căută Vremea</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Add Measurement</button>
             </div>
+          </form>
         </div>
-        <div id="publicWeatherResults" class="mt-4">
-            </div>
-        <div id="map"></div>
+      </div>
     </div>
 
-    <div class="modal fade" id="loginSignupModal" tabindex="-1" aria-labelledby="loginSignupModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="visualizationModal" tabindex="-1" aria-labelledby="visualizationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="loginSignupModalLabel">Autentificare / Înregistrare</h5>
+                    <h5 class="modal-title" id="visualizationModalLabel">Data Visualizations & Statistics</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="loginForm">
-                        <h4 class="mb-3">Login</h4>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Nume utilizator</label>
-                            <input type="text" id="username" class="form-control" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Parolă</label>
-                            <input type="password" id="password" class="form-control" required />
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                        <p class="mt-3 text-center">Nu ai cont? <a href="#" id="showSignup">Înregistrează-te aici</a></p>
-                    </form>
+                    <div class="d-flex justify-content-end mb-4">
+                        <button class="btn btn-secondary" id="export-stats-csv">Export Statistics (CSV)</button>
+                    </div>
 
-                    <form id="signupForm" style="display:none;">
-                        <h4 class="mb-3">Înregistrare</h4>
-                        <div class="mb-3">
-                            <label for="su_username" class="form-label">Nume utilizator</label>
-                            <input type="text" id="su_username" class="form-control" required />
+                    <div class="row">
+                        <div class="col-md-6 stats-section">
+                            <h4>Average Values</h4>
+                            <ul id="average-values-list"></ul>
                         </div>
-                        <div class="mb-3">
-                            <label for="su_password" class="form-label">Parolă</label>
-                            <input type="password" id="su_password" class="form-control" required />
+                        <div class="col-md-6 stats-section">
+                            <h4>Deviation from Standard Values</h4>
+                            <ul id="deviation-values-list"></ul>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">Înregistrează-te</button>
-                        <button type="button" id="cancelSignup" class="btn btn-secondary mt-2 w-100">Anulează</button>
-                    </form>
-
-                    <div id="message" class="message mt-3" style="display: none;"></div>
+                    </div>
+                    <hr class="my-5">
+                    <h4>Trend Plots</h4>
+                    <div class="plot-grid" id="trend-plots-container">
+                    </div>
+                    <hr class="my-5">
+                    <h4>Correlation Plots</h4>
+                    <div class="plot-grid" id="correlation-plots-container">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    const showSignup = document.getElementById('showSignup');
-    const cancelSignup = document.getElementById('cancelSignup');
-    const messageDiv = document.getElementById('message');
-    const loginSignupModal = new bootstrap.Modal(document.getElementById('loginSignupModal'));
-    const showLoginModalBtn = document.getElementById('showLoginModalBtn');
-    const publicCityInput = document.getElementById('publicCity');
-    const publicCountryInput = document.getElementById('publicCountry');
-    const fetchPublicWeatherBtn = document.getElementById('fetchPublicWeatherBtn');
-    const publicWeatherResultsDiv = document.getElementById('publicWeatherResults');
-    const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
-    const body = document.body;
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    let map = null; // Variable to hold the map instance
+    <script>
+        $(document).ready(function () {
+            let lastFetchedData = null; // for temporary storage
+            const visualizationModal = new bootstrap.Modal(document.getElementById('visualizationModal'));
+            const addManualMeasurementModal = new bootstrap.Modal(document.getElementById('addMeasurementModal'));
 
-    // --- Dark Mode Toggle ---
-    toggleDarkModeBtn.addEventListener('click', () => {
-        if (body.getAttribute('data-bs-theme') === 'dark') {
-            body.setAttribute('data-bs-theme', 'light');
-            toggleDarkModeBtn.textContent = 'Toggle Dark Mode';
+            // Dark Mode Toggle
+            $('#dark-mode-toggle').on('click', function() {
+                $('body').toggleClass('dark-mode');
+                // Store preference in localStorage
+                if ($('body').hasClass('dark-mode')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+
+            // Apply dark mode preference on load
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                $('body').addClass('dark-mode');
+            }
+
+            $('#logout-btn').on('click', function() {
+    fetch('/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Redirect to home page (which serves login.html)
+            window.location.href = '/';
         } else {
-            body.setAttribute('data-bs-theme', 'dark');
-            toggleDarkModeBtn.textContent = 'Toggle Light Mode';
+            console.error('Logout failed on server side.');
+            alert('A apărut o eroare la delogare. Te rugăm să încerci din nou.');
         }
+    })
+    .catch(error => {
+        console.error('Network error during logout:', error);
+        alert('Eroare de rețea. Te rugăm să verifici conexiunea sau să încerci mai târziu.');
     });
+});
 
-    // --- Modal Control ---
-    showLoginModalBtn.addEventListener('click', () => {
-        loginSignupModal.show();
-        // Reset to login form when modal is shown
-        loginForm.style.display = 'block';
-        signupForm.style.display = 'none';
-        messageDiv.style.display = 'none';
-    });
 
-    showSignup.addEventListener('click', e => {
-        e.preventDefault();
-        loginForm.style.display = 'none';
-        signupForm.style.display = 'block';
-        messageDiv.textContent = '';
-        messageDiv.style.display = 'none';
-    });
+            // Function to generate a plot container HTML
+            function createPlotHtml(src, alt) {
+                return `
+                    <div class="plot-item">
+                        <img src="${src}" alt="${alt}">
+                        <h6>${alt}</h6>
+                    </div>
+                `;
+            }
 
-    cancelSignup.addEventListener('click', () => {
-        signupForm.style.display = 'none';
-        loginForm.style.display = 'block';
-        messageDiv.textContent = '';
-        messageDiv.style.display = 'none';
-    });
+            // Function to populate statistics lists
+            function populateStatsList(id, data) {
+                const list = $(`#${id}`);
+                list.empty();
+                if (data && Object.keys(data).length > 0) {
+                    for (const key in data) {
+                        let displayName = key.replace(/([A-Z])/g, ' $1').trim();
+                        // Custom display names for air quality parameters
+                        if (displayName.toLowerCase() === 'pm25') displayName = 'PM2.5';
+                        else if (displayName.toLowerCase() === 'pm10') displayName = 'PM10';
+                        else if (displayName.toLowerCase() === 'co') displayName = 'CO';
+                        else if (displayName.toLowerCase() === 'no2') displayName = 'NO2';
+                        else if (displayName.toLowerCase() === 'so2') displayName = 'SO2';
+                        else if (displayName.toLowerCase() === 'o3') displayName = 'O3';
+                        else if (displayName.toLowerCase() === 'aqi') displayName = 'AQI';
+                        else if (displayName.toLowerCase() === 'temperature') displayName = 'Temperature';
+                        else if (displayName.toLowerCase() === 'humidity') displayName = 'Humidity';
+                        else if (displayName.toLowerCase() === 'pressure') displayName = 'Pressure';
 
-    function showMessage(text, type) {
-        messageDiv.textContent = text;
-        messageDiv.className = `message mt-3 ${type}`; // Update class for styling
-        messageDiv.style.display = 'block';
-    }
 
-    // --- Login & Signup Handlers ---
-    loginForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const res = await fetch('/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password})
-        });
-        const data = await res.json();
-        if(res.ok) {
-            window.location.href = '/dashboard'; // Redirect to dashboard on successful login
-        } else {
-            showMessage(data.error || 'Eroare autentificare', 'error');
-        }
-    });
-
-    signupForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const username = document.getElementById('su_username').value.trim();
-        const password = document.getElementById('su_password').value.trim();
-        const res = await fetch('/signup', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password})
-        });
-        const data = await res.json();
-        if(res.ok) {
-            showMessage('Cont creat! Te poți autentifica acum.', 'success');
-            signupForm.style.display = 'none';
-            loginForm.style.display = 'block';
-        } else {
-            showMessage(data.error || 'Eroare înregistrare', 'error');
-        }
-    });
-
-    // --- Public Weather Search Handler ---
-    fetchPublicWeatherBtn.addEventListener('click', async () => {
-        const city = publicCityInput.value.trim();
-        const country = publicCountryInput.value.trim();
-
-        if (!city || !country) {
-            publicWeatherResultsDiv.innerHTML = '<div class="alert alert-warning">Vă rugăm introduceți orașul și țara.</div>';
-            return;
-        }
-
-        publicWeatherResultsDiv.innerHTML = '<div class="text-center text-muted">Se încarcă datele...</div>';
-
-        try {
-            const res = await fetch(`/public_weather/${encodeURIComponent(city)}/${encodeURIComponent(country)}`);
-            const data = await res.json();
-
-            if (res.ok) {
-                displayWeatherResults(data);
-            } else {
-                publicWeatherResultsDiv.innerHTML = `<div class="alert alert-danger">${data.error || 'Nu s-au putut prelua datele meteo.'}</div>`;
-                if (res.status === 401) {
-                    showMessage('Pentru a salva sau accesa funcționalități avansate, vă rugăm să vă autentificați.', 'info');
-                    loginSignupModal.show();
+                        list.append(`
+                            <li>
+                                <strong>${displayName}:</strong>
+                                <span>${data[key] !== null ? data[key].toFixed(2) : 'N/A'}</span>
+                            </li>
+                        `);
+                    }
+                } else {
+                    list.append('<li>No data available to compute statistics.</li>');
                 }
             }
-        } catch (error) {
-            console.error('Error fetching public weather:', error);
-            publicWeatherResultsDiv.innerHTML = '<div class="alert alert-danger">A apărut o eroare la comunicarea cu serverul.</div>';
-        }
-    });
 
-    function displayWeatherResults(data) {
-        let content = `
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h5 class="card-title">${data.city}, ${data.country}</h5>
-                    <p class="card-text"><strong>Temperatură:</strong> ${data.temperature !== undefined ? data.temperature.toFixed(1) + '°C' : 'N/A'}</p>
-                    <p class="card-text"><strong>Umiditate:</strong> ${data.humidity !== undefined ? data.humidity + '%' : 'N/A'}</p>
-                    <p class="card-text"><strong>Presiune:</strong> ${data.pressure !== undefined ? data.pressure + ' hPa' : 'N/A'}</p>
-                    <p class="card-text"><strong>Condiții:</strong> ${data.condition || 'N/A'}</p>
-                    <h6>Calitatea Aerului (µg/m³):</h6>
-                    <ul>
-                        <li>CO: ${data.co !== undefined ? data.co.toFixed(2) : 'N/A'}</li>
-                        <li>NO2: ${data.no2 !== undefined ? data.no2.toFixed(2) : 'N/A'}</li>
-                        <li>SO2: ${data.so2 !== undefined ? data.so2.toFixed(2) : 'N/A'}</li>
-                        <li>O3: ${data.o3 !== undefined ? data.o3.toFixed(2) : 'N/A'}</li>
-                        <li>PM2.5: ${data.pm25 !== undefined ? data.pm25.toFixed(2) : 'N/A'}</li>
-                        <li>PM10: ${data.pm10 !== undefined ? data.pm10.toFixed(2) : 'N/A'}</li>
-                    </ul>
-                </div>
-            </div>
-            <p class="mt-3 text-muted">Vrei să salvezi aceste măsurători sau să accesezi statistici avansate? <a href="#" id="promptLoginLink">Autentifică-te</a>!</p>
-        `;
-        publicWeatherResultsDiv.innerHTML = content;
 
-        // Add event listener for the prompt login link
-        document.getElementById('promptLoginLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            loginSignupModal.show();
+            // Fetch Weather
+            $('#fetch-weather-form').on('submit', function (e) {
+                e.preventDefault();
+                const city = $('#city').val().trim();
+                const country = $('#country').val().trim();
+                if (!city || !country) {
+                    alert('Please enter both city and country.');
+                    return;
+                }
+
+                $('#weather-result').html('<p class="text-info">Fetching data...</p>');
+                $('#store-weather-data').prop('disabled', true);
+                $('#map-container').hide();
+
+                fetch(`/weather/${encodeURIComponent(city)}/${encodeURIComponent(country)}`)
+                    .then(res => {
+                        if (!res.ok) {
+                            return res.json().then(err => { throw new Error(err.error || 'Failed to fetch data'); });
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        lastFetchedData = data;
+                        $('#weather-result').html(`
+                            <p><strong>City:</strong> ${data.city}</p>
+                            <p><strong>Country:</strong> ${data.country}</p>
+                            <p><strong>Temperature:</strong> ${data.temperature ?? 'N/A'} °C</p>
+                            <p><strong>Humidity:</strong> ${data.humidity ?? 'N/A'} %</p>
+                            <p><strong>Pressure:</strong> ${data.pressure ?? 'N/A'} hPa</p>
+                            <p><strong>PM2.5:</strong> ${data.pm25 ?? 'N/A'} μg/m³</p>
+                            <p><strong>PM10:</strong> ${data.pm10 ?? 'N/A'} μg/m³</p>
+                            <p><strong>CO:</strong> ${data.co ?? 'N/A'} μg/m³</p>
+                            <p><strong>NO2:</strong> ${data.no2 ?? 'N/A'} μg/m³</p>
+                            <p><strong>SO2:</strong> ${data.so2 ?? 'N/A'} μg/m³</p>
+                            <p><strong>O3:</strong> ${data.o3 ?? 'N/A'} μg/m³</p>
+                            <p><strong>Condition:</strong> ${data.condition ?? 'N/A'}</p>
+                        `);
+                        $('#store-weather-data').prop('disabled', false);
+
+                        // Show map with Google Maps centered on the city
+                        if (data.city && data.country) {
+                             $('#map-frame').attr('src', `https://maps.google.com/maps?q=${encodeURIComponent(data.city)},${encodeURIComponent(data.country)}&t=&z=12&ie=UTF8&iwloc=&output=embed`);
+                             $('#map-container').show();
+                        } else {
+                            $('#map-container').hide();
+                        }
+                    })
+                    .catch(err => {
+                        $('#weather-result').html(`<p class="text-danger">Error: ${err.message}</p>`);
+                        $('#store-weather-data').prop('disabled', true);
+                        $('#map-container').hide();
+                    });
+            });
+
+            // Store weather data in measurements
+            $('#store-weather-data').on('click', function () {
+                if (!lastFetchedData) return;
+                const dataToSend = {
+                    city: lastFetchedData.city,
+                    country: lastFetchedData.country,
+                    temperature: lastFetchedData.temperature,
+                    humidity: lastFetchedData.humidity,
+                    pressure: lastFetchedData.pressure,
+                    pm25: lastFetchedData.pm25,
+                    pm10: lastFetchedData.pm10,
+                    co: lastFetchedData.co,
+                    no2: lastFetchedData.no2,
+                    so2: lastFetchedData.so2,
+                    o3: lastFetchedData.o3,
+                    condition: lastFetchedData.condition
+                };
+                $.ajax({
+                    url: '/measurements',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataToSend),
+                    success: function(response) {
+                        alert('Data stored successfully!');
+                        loadMeasurements();
+                        $('#store-weather-data').prop('disabled', true); // Disable after storing
+                    },
+                    error: function(xhr, status, error) {
+                        alert(`Failed to store data: ${xhr.responseJSON ? xhr.responseJSON.error : error}`);
+                    }
+                });
+            });
+
+            // Load all measurements in table
+            function loadMeasurements() {
+                fetch('/measurements')
+                    .then(res => res.json())
+                    .then(data => {
+                        const tbody = $('#measurements-table tbody');
+                        tbody.empty();
+                        if (data.length === 0) {
+                            tbody.append('<tr><td colspan="15" class="text-center text-muted py-3">No measurements available. Start by fetching weather data or adding manually!</td></tr>');
+                            return;
+                        }
+                        data.forEach(m => {
+                            tbody.append(`
+                                <tr>
+                                    <td>${m.id}</td>
+                                    <td>${m.city ?? 'N/A'}</td>
+                                    <td>${m.country ?? 'N/A'}</td>
+                                    <td>${m.temperature ?? 'N/A'}</td>
+                                    <td>${m.humidity ?? 'N/A'}</td>
+                                    <td>${m.pressure ?? 'N/A'}</td>
+                                    <td>${m.pm25 ?? 'N/A'}</td>
+                                    <td>${m.pm10 ?? 'N/A'}</td>
+                                    <td>${m.co ?? 'N/A'}</td>
+                                    <td>${m.no2 ?? 'N/A'}</td>
+                                    <td>${m.so2 ?? 'N/A'}</td>
+                                    <td>${m.o3 ?? 'N/A'}</td>
+                                    <td>${m.condition ?? 'N/A'}</td>
+                                    <td>${m.timestamp ? new Date(m.timestamp).toLocaleString() : 'N/A'}</td>
+                                    <td><button class="btn btn-danger btn-sm delete-btn" data-id="${m.id}">Delete</button></td>
+                                </tr>
+                            `);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error loading measurements:', error);
+                        $('#measurements-table tbody').html('<tr><td colspan="15" class="text-danger text-center py-3">Failed to load measurements. Please try again.</td></tr>');
+                    });
+            }
+            loadMeasurements();
+
+            // Delete measurement by id
+            $('#measurements-table').on('click', '.delete-btn', function () {
+                const id = $(this).data('id');
+                if(confirm('Are you sure you want to delete this measurement?')) {
+                    fetch(`/measurements/${id}`, { method: 'DELETE' })
+                        .then(res => {
+                            if (!res.ok) {
+                                return res.json().then(err => { throw new Error(err.error || 'Failed to delete measurement'); });
+                            }
+                            return res.json();
+                        })
+                        .then(() => {
+                            alert('Measurement deleted successfully!');
+                            loadMeasurements();
+                        })
+                        .catch(err => alert(`Error deleting measurement: ${err.message}`));
+                }
+            });
+
+            // Delete all measurements
+            $('#delete-all-measurements').on('click', function () {
+                if(confirm('Are you sure you want to delete ALL measurements? This action cannot be undone.')) {
+                    fetch('/measurements/delete_all', { method: 'DELETE' })
+                        .then(res => {
+                            if (!res.ok) {
+                                return res.json().then(err => { throw new Error(err.error || 'Failed to delete all measurements'); });
+                            }
+                            return res.json();
+                        })
+                        .then(() => {
+                            alert('All measurements deleted successfully!');
+                            loadMeasurements();
+                        })
+                        .catch(err => alert(`Error deleting all measurements: ${err.message}`));
+                }
+            });
+
+            // Open modal add measurement
+            $('#open-add-modal').on('click', function () {
+                $('#add-measurement-modal-form')[0].reset(); // Clear form fields
+                addManualMeasurementModal.show();
+            });
+
+            // Submit add measurement form
+            $('#add-measurement-modal-form').on('submit', function (e) {
+                e.preventDefault();
+                const newData = {
+                    city: $('#modal-city').val().trim(),
+                    country: $('#modal-country').val().trim(),
+                    temperature: parseFloat($('#modal-temperature').val()) || null,
+                    humidity: parseFloat($('#modal-humidity').val()) || null,
+                    pressure: parseFloat($('#modal-pressure').val()) || null,
+                    pm25: parseFloat($('#modal-pm25').val()) || null,
+                    pm10: parseFloat($('#modal-pm10').val()) || null,
+                    co: parseFloat($('#modal-co').val()) || null,
+                    no2: parseFloat($('#modal-no2').val()) || null,
+                    so2: parseFloat($('#modal-so2').val()) || null,
+                    o3: parseFloat($('#modal-o3').val()) || null,
+                    condition: $('#modal-condition').val().trim() || null
+                };
+
+                // Basic validation for city and country
+                if (!newData.city || !newData.country) {
+                    alert('City and Country are required for manual measurements.');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/measurements/manual',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(newData),
+                    success: function(response) {
+                        alert('Manual measurement added successfully!');
+                        loadMeasurements();
+                        addManualMeasurementModal.hide();
+                    },
+                    error: function(xhr, status, error) {
+                        alert(`Failed to add manual measurement: ${xhr.responseJSON ? xhr.responseJSON.error : error}`);
+                    }
+                });
+            });
+
+            // Export measurements
+            $('#export-measurements').on('click', function () {
+                fetch('/measurements/export')
+                    .then(res => {
+                        if (!res.ok) {
+                            return res.json().then(err => { throw new Error(err.error || 'Failed to export measurements'); });
+                        }
+                        return res.blob();
+                    })
+                    .then(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'measurements.csv';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    })
+                    .catch(err => alert(`Error exporting measurements: ${err.message}`));
+            });
+
+            // Visualize Data - Fetch and display all plots and statistics in modal
+            $('#visualize-measurements').on('click', function () {
+                const visualizationBody = $('#visualizationModal .modal-body');
+                const trendPlotsContainer = $('#trend-plots-container');
+                const correlationPlotsContainer = $('#correlation-plots-container');
+                const averageValuesList = $('#average-values-list');
+                const deviationValuesList = $('#deviation-values-list');
+
+                // Clear previous content
+                trendPlotsContainer.empty();
+                correlationPlotsContainer.empty();
+                averageValuesList.empty();
+                deviationValuesList.empty();
+
+                // Show loading indicator
+                visualizationBody.prepend('<div id="loading-indicator" class="text-center p-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-3 text-muted">Generating plots and statistics... This might take a moment.</p></div>');
+
+                fetch('/measurements/plot_all')
+                    .then(res => {
+                        if (!res.ok) {
+                            return res.json().then(err => { throw new Error(err.error || 'Failed to fetch plot data'); });
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        $('#loading-indicator').remove(); // Remove loading indicator
+
+                        if (data.error) {
+                            visualizationBody.html(`<p class="text-danger text-center p-5">${data.error}</p>`);
+                            return;
+                        }
+
+                        // Populate Average Values
+                        populateStatsList('average-values-list', data.average_values);
+
+                        // Populate Deviation from Standard
+                        populateStatsList('deviation-values-list', data.deviation_from_standard);
+
+                        // Display Plots
+                        // Filter plots into trend and correlation for better organization
+                        const allPlots = data;
+                        let trendPlotsFound = false;
+                        let correlationPlotsFound = false;
+
+                        for (const key in allPlots) {
+                            if (key.endsWith('_plot') && allPlots[key] !== null) {
+                                const plotSrc = allPlots[key];
+                                let plotTitle = key.replace(/_plot$/, '').replace(/([A-Z])/g, ' $1').trim();
+
+                                if (plotTitle.includes('vs')) {
+                                    // This is a correlation plot
+                                    plotTitle = plotTitle.replace('vs', 'vs. ').replace('pm25', 'PM2.5').replace('pm10', 'PM10').replace('co', 'CO').replace('no2', 'NO2').replace('so2', 'SO2').replace('o3', 'O3');
+                                    correlationPlotsContainer.append(createPlotHtml(plotSrc, plotTitle + ' Correlation'));
+                                    correlationPlotsFound = true;
+                                } else {
+                                    // This is a trend plot (e.g., temperature_trend_plot)
+                                    plotTitle = plotTitle.replace('pm25', 'PM2.5').replace('pm10', 'PM10').replace('co', 'CO').replace('no2', 'NO2').replace('so2', 'SO2').replace('o3', 'O3');
+                                    trendPlotsContainer.append(createPlotHtml(plotSrc, plotTitle + ' Trend'));
+                                    trendPlotsFound = true;
+                                }
+                            }
+                        }
+
+                        if (!trendPlotsFound) {
+                            trendPlotsContainer.html('<p class="text-muted text-center py-3">No trend plots available. Please ensure you have sufficient and varied data.</p>');
+                        }
+                        if (!correlationPlotsFound) {
+                            correlationPlotsContainer.html('<p class="text-muted text-center py-3">No correlation plots available. Please ensure you have sufficient and varied data for correlations.</p>');
+                        }
+
+                        visualizationModal.show();
+                    })
+                    .catch(err => {
+                        $('#loading-indicator').remove();
+                        visualizationBody.html(`<p class="text-danger text-center p-5">Error generating visualizations: ${err.message}. Please ensure there is enough data.</p>`);
+                        console.error('Error generating visualizations:', err);
+                    });
+            });
+
+            // Export Statistics (CSV)
+            $('#export-stats-csv').on('click', function() {
+                fetch('/measurements/export_stats')
+                    .then(res => {
+                        if (!res.ok) {
+                            return res.json().then(err => { throw new Error(err.error || 'Failed to export statistics'); });
+                        }
+                        return res.blob();
+                    })
+                    .then(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'statistics.csv';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    })
+                    .catch(err => alert(`Error exporting statistics: ${err.message}`));
+            });
         });
-
-        // Initialize or update map
-        if (data.lat && data.lon) {
-            if (map === null) {
-                map = L.map('map').setView([data.lat, data.lon], 10);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-            } else {
-                map.setView([data.lat, data.lon], 10);
-            }
-            L.marker([data.lat, data.lon]).addTo(map)
-                .bindPopup(`${data.city}, ${data.country}`)
-                .openPopup();
-        } else {
-            if (map) {
-                map.remove(); // Remove map if coordinates are not available
-                map = null;
-            }
-            document.getElementById('map').innerHTML = '<div class="alert alert-info">Coordonatele nu sunt disponibile pentru a afișa harta.</div>';
-        }
-    }
-</script>
+    </script>
 </body>
 </html>
