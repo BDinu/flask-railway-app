@@ -9,62 +9,61 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
     <style>
-    /* Definirea culorilor pentru modul deschis - mai intense */
+
     :root {
-        --light-bg: #f0f4f8; /* Fundal foarte deschis, ușor albăstrui */
-        --light-text: #2c3e50; /* Text închis, profesional */
-        --light-card-bg: #ffffff; /* Carduri albe și curate */
-        --light-border: #d5e0ea; /* Bordură clară, dar subtilă */
-        --light-primary: #3498db; /* Un albastru vibrant, clasic */
-        --light-primary-hover: #2980b9; /* Albastru mai închis pentru hover */
-        --light-success: #2ecc71; /* Un verde proaspăt, energic */
-        --light-success-hover: #27ae60; /* Verde mai închis pentru hover */
-        --light-secondary: #95a5a6; /* Gri neutru pentru butoane secundare */
-        --light-secondary-hover: #7f8c8d; /* Gri mai închis pentru hover */
-        --light-info: #3498db; /* Reutilizăm albastrul primar pentru info, consistență */
+        --light-bg: #f0f4f8;
+        --light-text: #2c3e50;
+        --light-card-bg: #ffffff;
+        --light-border: #d5e0ea;
+        --light-primary: #3498db;
+        --light-primary-hover: #2980b9;
+        --light-success: #2ecc71;
+        --light-success-hover: #27ae60;
+        --light-secondary: #95a5a6;
+        --light-secondary-hover: #7f8c8d;
+        --light-info: #3498db;
         --light-info-hover: #2980b9;
-        --light-danger: #e74c3c; /* Roșu puternic pentru erori/atenționări */
-        --light-danger-hover: #c0392b; /* Roșu mai închis pentru hover */
-        --light-link: #3498db; /* Link-uri în culoarea primară */
-        --light-shadow: rgba(0, 0, 0, 0.08); /* Umbre mai pronunțate, dar elegante */
+        --light-danger: #e74c3c;
+        --light-danger-hover: #c0392b;
+        --light-link: #3498db;
+        --light-shadow: rgba(0, 0, 0, 0.08);
 
-        /* Culori specifice pentru Dashboard */
-        --dash-header-bg-primary: #3498db; /* Albastru primar */
-        --dash-header-bg-info: #2ecc71;    /* Verde success */
-        --dash-header-bg-success: #e67e22; /* Portocaliu pentru "Add Manual" */
-        --dash-header-bg-secondary: #95a5a6; /* Gri neutru pentru "Data Visualization" */
 
-        --dash-table-header-bg: #2c3e50; /* Fundal antet tabel, un gri-albastru închis */
+        --dash-header-bg-primary: #3498db;
+        --dash-header-bg-info: #2ecc71;
+        --dash-header-bg-success: #e67e22;
+        --dash-header-bg-secondary: #95a5a6;
+
+        --dash-table-header-bg: #2c3e50;
         --dash-table-row-even: #f5f8fb;
         --dash-table-row-hover: #e0eaf3;
     }
 
-    /* Definirea culorilor pentru modul întunecat - cu margini mult mai vizibile */
     body.dark-mode {
-        --light-bg: #212c3b; /* Fundal întunecat, albastru-cenușiu adânc */
-        --light-text: #e0e6eb; /* Text deschis, ușor gri pentru lizibilitate */
-        --light-card-bg: #2c3e50; /* Carduri mai închise decât fundalul */
-        --light-border: #6a88b0; /* Bordură foarte distinctă pentru elemente în dark mode */
-        --light-primary: #3498db; /* Același albastru vibrant, se vede bine pe întunecat */
-        --light-primary-hover: #5faee3; /* Albastru mai deschis pentru hover în dark mode */
-        --light-success: #2ecc71; /* Același verde proaspăt */
-        --light-success-hover: #56e390; /* Verde mai deschis pentru hover în dark mode */
-        --light-secondary: #95a5a6; /* Același gri */
-        --light-secondary-hover: #b0c0c1; /* Gri mai deschis pentru hover în dark mode */
-        --light-info: #3498db; /* Același albastru */
+        --light-bg: #212c3b;
+        --light-text: #e0e6eb;
+        --light-card-bg: #2c3e50;
+        --light-border: #6a88b0;
+        --light-primary: #3498db;
+        --light-primary-hover: #5faee3;
+        --light-success: #2ecc71;
+        --light-success-hover: #56e390;
+        --light-secondary: #95a5a6;
+        --light-secondary-hover: #b0c0c1;
+        --light-info: #3498db;
         --light-info-hover: #5faee3;
-        --light-danger: #e74c3c; /* Același roșu */
-        --light-danger-hover: #ff786e; /* Roșu mai deschis pentru hover în dark mode */
-        --light-link: #5faee3; /* Link-uri mai deschise pentru vizibilitate */
-        --light-shadow: rgba(0, 0, 0, 0.4); /* Umbre mai adânci */
+        --light-danger: #e74c3c;
+        --light-danger-hover: #ff786e;
+        --light-link: #5faee3;
+        --light-shadow: rgba(0, 0, 0, 0.4);
 
-        /* Culori specifice pentru Dashboard - Dark Mode */
-        --dash-header-bg-primary: #2980b9; /* Albastru primar mai închis */
-        --dash-header-bg-info: #27ae60;    /* Verde success mai închis */
-        --dash-header-bg-success: #d35400; /* Portocaliu mai închis */
-        --dash-header-bg-secondary: #7f8c8d; /* Gri neutru mai închis */
+        /*Dashboard - Dark Mode */
+        --dash-header-bg-primary: #2980b9;
+        --dash-header-bg-info: #27ae60;
+        --dash-header-bg-success: #d35400;
+        --dash-header-bg-secondary: #7f8c8d;
 
-        --dash-table-header-bg: #1c2a39; /* Fundal antet tabel, și mai închis */
+        --dash-table-header-bg: #1c2a39;
         --dash-table-row-even: #3a4b60;
         --dash-table-row-hover: #4b607a;
     }
