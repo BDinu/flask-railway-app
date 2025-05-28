@@ -9,221 +9,309 @@
     <style>
         /* Definirea culorilor pentru modul deschis - mai intense */
         :root {
-            --light-bg: #f0f4f8; /* Fundal foarte deschis, ușor albăstrui */
-            --light-text: #2c3e50; /* Text închis, profesional */
-            --light-card-bg: #ffffff; /* Carduri albe și curate */
-            --light-border: #d5e0ea; /* Bordură clară, dar subtilă */
-            --light-primary: #3498db; /* Un albastru vibrant, clasic */
-            --light-primary-hover: #2980b9; /* Albastru mai închis pentru hover */
-            --light-success: #2ecc71; /* Un verde proaspăt, energic */
-            --light-success-hover: #27ae60; /* Verde mai închis pentru hover */
-            --light-secondary: #95a5a6; /* Gri neutru pentru butoane secundare */
-            --light-secondary-hover: #7f8c8d; /* Gri mai închis pentru hover */
-            --light-info: #3498db; /* Reutilizăm albastrul primar pentru info, consistență */
-            --light-info-hover: #2980b9;
-            --light-danger: #e74c3c; /* Roșu puternic pentru erori/atenționări */
-            --light-danger-hover: #c0392b; /* Roșu mai închis pentru hover */
-            --light-link: #3498db; /* Link-uri în culoarea primară */
-            --light-shadow: rgba(0, 0, 0, 0.08); /* Umbre mai pronunțate, dar elegante */
-        }
+    --light-bg: #f0f4f8;
+    --light-text: #2c3e50;
+    --light-card-bg: #ffffff;
+    --light-border: #d5e0ea;
+    --light-primary: #3498db;
+    --light-primary-hover: #2980b9;
+    --light-success: #2ecc71;
+    --light-success-hover: #27ae60;
+    --light-secondary: #95a5a6;
+    --light-secondary-hover: #7f8c8d;
+    --light-info: #3498db;
+    --light-info-hover: #2980b9;
+    --light-danger: #e74c3c;
+    --light-danger-hover: #c0392b;
+    --light-link: #3498db;
+    --light-shadow: rgba(0, 0, 0, 0.08);
+}
 
-        /* Definirea culorilor pentru modul întunecat - cu margini mai vizibile */
-        [data-bs-theme="dark"] {
-            --dark-bg: #212c3b; /* Fundal întunecat, albastru-cenușiu adânc */
-            --dark-text: #e0e6eb; /* Text deschis, ușor gri pentru lizibilitate */
-            --dark-card-bg: #2c3e50; /* Carduri mai închise decât fundalul */
-            --dark-border: #4a627a; /* Bordură distinctă pentru elemente */
-            --dark-primary: #3498db; /* Același albastru vibrant, se vede bine pe întunecat */
-            --dark-primary-hover: #5faee3; /* Albastru mai deschis pentru hover în dark mode */
-            --dark-success: #2ecc71; /* Același verde proaspăt */
-            --dark-success-hover: #56e390; /* Verde mai deschis pentru hover în dark mode */
-            --dark-secondary: #95a5a6; /* Același gri */
-            --dark-secondary-hover: #b0c0c1; /* Gri mai deschis pentru hover în dark mode */
-            --dark-info: #3498db; /* Același albastru */
-            --dark-info-hover: #5faee3;
-            --dark-danger: #e74c3c; /* Același roșu */
-            --dark-danger-hover: #ff786e; /* Roșu mai deschis pentru hover în dark mode */
-            --dark-link: #5faee3; /* Link-uri mai deschise pentru vizibilitate */
-            --dark-shadow: rgba(0, 0, 0, 0.4); /* Umbre mai adânci */
+[data-bs-theme="dark"] {
+    --dark-bg: #212c3b;
+    --dark-text: #e0e6eb;
+    --dark-card-bg: #2c3e50;
+    --dark-border: #4a627a;
+    --dark-primary: #3498db;
+    --dark-primary-hover: #5faee3;
+    --dark-success: #2ecc71;
+    --dark-success-hover: #56e390;
+    --dark-secondary: #95a5a6;
+    --dark-secondary-hover: #b0c0c1;
+    --dark-info: #3498db;
+    --dark-info-hover: #5faee3;
+    --dark-danger: #e74c3c;
+    --dark-danger-hover: #ff786e;
+    --dark-link: #5faee3;
+    --dark-shadow: rgba(0, 0, 0, 0.4);
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
 
-            background-color: var(--dark-bg);
-            color: var(--dark-text);
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--light-text);
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
 
-        /* Stiluri generale pentru corp și tranziții */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-bg);
-            color: var(--light-text);
-            transition: background-color 0.4s ease, color 0.4s ease;
-        }
+.card {
+    background-color: var(--light-card-bg);
+    border: 1px solid var(--light-border);
+    border-radius: 8px;
+    box-shadow: 0 6px 16px var(--light-shadow);
+    transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
 
-        /* Stiluri pentru carduri */
-        .card {
-            background-color: var(--light-card-bg);
-            border: 1px solid var(--light-border); /* Border vizibil */
-            border-radius: 8px;
-            box-shadow: 0 6px 16px var(--light-shadow); /* Umbra îmbunătățită */
-            transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-        }
-        [data-bs-theme="dark"] .card {
-            background-color: var(--dark-card-bg);
-            border-color: var(--dark-border); /* Border mai pronunțat în dark mode */
-            box-shadow: 0 6px 16px var(--dark-shadow);
-        }
+[data-bs-theme="dark"] .card {
+    background-color: var(--dark-card-bg);
+    border-color: var(--dark-border);
+    box-shadow: 0 6px 16px var(--dark-shadow);
+}
 
-        /* Stiluri pentru butoane - tranziții fine și efect de transformare */
-        .btn { /* Aplicăm stiluri generice pentru toate butoanele Bootstrap */
-            border-radius: 5px;
-            font-weight: 500;
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-        }
+.btn {
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
 
-        /* Culori de bază pentru butoane în light mode */
-        .btn-primary { background-color: var(--light-primary); border-color: var(--light-primary); color: white; }
-        .btn-success { background-color: var(--light-success); border-color: var(--light-success); color: white; }
-        .btn-secondary { background-color: var(--light-secondary); border-color: var(--light-secondary); color: white; }
-        .btn-info { background-color: var(--light-info); border-color: var(--light-info); color: white; }
-        .btn-danger { background-color: var(--light-danger); border-color: var(--light-danger); color: white; }
+.btn-primary {
+    background-color: var(--light-primary);
+    border-color: var(--light-primary);
+    color: white;
+}
 
-        /* Culori de hover pentru butoane în light mode */
-        .btn-primary:hover { background-color: var(--light-primary-hover); border-color: var(--light-primary-hover); transform: translateY(-2px); }
-        .btn-success:hover { background-color: var(--light-success-hover); border-color: var(--light-success-hover); transform: translateY(-2px); }
-        .btn-secondary:hover { background-color: var(--light-secondary-hover); border-color: var(--light-secondary-hover); transform: translateY(-2px); }
-        .btn-info:hover { background-color: var(--light-info-hover); border-color: var(--light-info-hover); transform: translateY(-2px); }
-        .btn-danger:hover { background-color: var(--light-danger-hover); border-color: var(--light-danger-hover); transform: translateY(-2px); }
+.btn-success {
+    background-color: var(--light-success);
+    border-color: var(--light-success);
+    color: white;
+}
 
-        /* Stiluri specifice pentru butoanele în dark mode */
-        [data-bs-theme="dark"] .btn-primary { background-color: var(--dark-primary); border-color: var(--dark-primary); }
-        [data-bs-theme="dark"] .btn-primary:hover { background-color: var(--dark-primary-hover); border-color: var(--dark-primary-hover); }
+.btn-secondary {
+    background-color: var(--light-secondary);
+    border-color: var(--light-secondary);
+    color: white;
+}
 
-        [data-bs-theme="dark"] .btn-success { background-color: var(--dark-success); border-color: var(--dark-success); }
-        [data-bs-theme="dark"] .btn-success:hover { background-color: var(--dark-success-hover); border-color: var(--dark-success-hover); }
+.btn-info {
+    background-color: var(--light-info);
+    border-color: var(--light-info);
+    color: white;
+}
 
-        [data-bs-theme="dark"] .btn-secondary { background-color: var(--dark-secondary); border-color: var(--dark-secondary); }
-        [data-bs-theme="dark"] .btn-secondary:hover { background-color: var(--dark-secondary-hover); border-color: var(--dark-secondary-hover); }
+.btn-danger {
+    background-color: var(--light-danger);
+    border-color: var(--light-danger);
+    color: white;
+}
 
-        [data-bs-theme="dark"] .btn-info { background-color: var(--dark-info); border-color: var(--dark-info); }
-        [data-bs-theme="dark"] .btn-info:hover { background-color: var(--dark-info-hover); border-color: var(--dark-info-hover); }
+.btn-primary:hover {
+    background-color: var(--light-primary-hover);
+    border-color: var(--light-primary-hover);
+    transform: translateY(-2px);
+}
 
-        [data-bs-theme="dark"] .btn-danger { background-color: var(--dark-danger); border-color: var(--dark-danger); }
-        [data-bs-theme="dark"] .btn-danger:hover { background-color: var(--dark-danger-hover); border-color: var(--dark-danger-hover); }
+.btn-success:hover {
+    background-color: var(--light-success-hover);
+    border-color: var(--light-success-hover);
+    transform: translateY(-2px);
+}
 
-        /* Stil pentru butonul Toggle Dark Mode */
-        .btn-outline-secondary {
-            border-color: var(--light-secondary);
-            color: var(--light-text); /* Culoarea textului de bază */
-            background-color: transparent; /* Asigură că este transparent */
-        }
-        .btn-outline-secondary:hover {
-            background-color: var(--light-secondary);
-            color: white; /* Text alb la hover */
-            border-color: var(--light-secondary);
-        }
-        [data-bs-theme="dark"] .btn-outline-secondary {
-            border-color: var(--dark-secondary);
-            color: var(--dark-text);
-        }
-        [data-bs-theme="dark"] .btn-outline-secondary:hover {
-            background-color: var(--dark-secondary);
-            color: white;
-            border-color: var(--dark-secondary);
-        }
+.btn-secondary:hover {
+    background-color: var(--light-secondary-hover);
+    border-color: var(--light-secondary-hover);
+    transform: translateY(-2px);
+}
 
-        /* Stiluri pentru link-uri */
-        a {
-            color: var(--light-link);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        a:hover {
-            color: var(--light-primary-hover);
-            text-decoration: underline;
-        }
-        [data-bs-theme="dark"] a {
-            color: var(--dark-link);
-        }
-        [data-bs-theme="dark"] a:hover {
-            color: var(--dark-primary-hover);
-        }
+.btn-info:hover {
+    background-color: var(--light-info-hover);
+    border-color: var(--light-info-hover);
+    transform: translateY(-2px);
+}
 
-        /* Mesaje de notificare */
-        .message {
-            padding: 12px;
-            margin-top: 15px;
-            border-radius: 5px;
-            font-weight: 500;
-        }
-        .message.success {
-            background-color: rgba(46, 204, 113, 0.15); /* Verde cu opacitate */
-            color: var(--light-success);
-            border: 1px solid var(--light-success);
-        }
-        .message.error {
-            background-color: rgba(231, 76, 60, 0.15); /* Roșu cu opacitate */
-            color: var(--light-danger);
-            border: 1px solid var(--light-danger);
-        }
-        [data-bs-theme="dark"] .message.success {
-            background-color: rgba(46, 204, 113, 0.25);
-            color: var(--dark-success-hover);
-        }
-        [data-bs-theme="dark"] .message.error {
-            background-color: rgba(231, 76, 60, 0.25);
-            color: var(--dark-danger-hover);
-        }
+.btn-danger:hover {
+    background-color: var(--light-danger-hover);
+    border-color: var(--light-danger-hover);
+    transform: translateY(-2px);
+}
 
-        /* Harta */
-        #map {
-            height: 300px;
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 20px;
-            border: 1px solid var(--light-border);
-            box-shadow: 0 2px 8px var(--light-shadow);
-        }
-        [data-bs-theme="dark"] #map {
-            border: 2px solid var(--dark-border); /* Margine mai groasă în dark mode */
-            box-shadow: 0 2px 8px var(--dark-shadow);
-        }
+[data-bs-theme="dark"] .btn-primary {
+    background-color: var(--dark-primary);
+    border-color: var(--dark-primary);
+}
 
-        /* Stiluri suplimentare pentru inputuri și etichete */
-        .form-control {
-            border-radius: 5px;
-            border: 1px solid var(--light-border);
-            background-color: var(--light-card-bg);
-            color: var(--light-text);
-            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
-        }
-        .form-control::placeholder {
-            color: var(--light-text);
-            opacity: 0.6;
-        }
-        [data-bs-theme="dark"] .form-control {
-            border: 1px solid var(--dark-border);
-            background-color: var(--dark-card-bg);
-            color: var(--dark-text);
-        }
-        [data-bs-theme="dark"] .form-control::placeholder {
-            color: var(--dark-text);
-            opacity: 0.6;
-        }
-        .form-label {
-            color: var(--light-text);
-            font-weight: 500;
-        }
-        [data-bs-theme="dark"] .form-label {
-            color: var(--dark-text);
-        }
+[data-bs-theme="dark"] .btn-primary:hover {
+    background-color: var(--dark-primary-hover);
+    border-color: var(--dark-primary-hover);
+}
 
-        /* Stiluri pentru anteturi */
-        h2, h3, h4, h5, h6 {
-            color: var(--light-text);
-            transition: color 0.4s ease;
-        }
-        [data-bs-theme="dark"] h2, [data-bs-theme="dark"] h3, [data-bs-theme="dark"] h4, [data-bs-theme="dark"] h5, [data-bs-theme="dark"] h6 {
-            color: var(--dark-text);
-        }
+[data-bs-theme="dark"] .btn-success {
+    background-color: var(--dark-success);
+    border-color: var(--dark-success);
+}
+
+[data-bs-theme="dark"] .btn-success:hover {
+    background-color: var(--dark-success-hover);
+    border-color: var(--dark-success-hover);
+}
+
+[data-bs-theme="dark"] .btn-secondary {
+    background-color: var(--dark-secondary);
+    border-color: var(--dark-secondary);
+}
+
+[data-bs-theme="dark"] .btn-secondary:hover {
+    background-color: var(--dark-secondary-hover);
+    border-color: var(--dark-secondary-hover);
+}
+
+[data-bs-theme="dark"] .btn-info {
+    background-color: var(--dark-info);
+    border-color: var(--dark-info);
+}
+
+[data-bs-theme="dark"] .btn-info:hover {
+    background-color: var(--dark-info-hover);
+    border-color: var(--dark-info-hover);
+}
+
+[data-bs-theme="dark"] .btn-danger {
+    background-color: var(--dark-danger);
+    border-color: var(--dark-danger);
+}
+
+[data-bs-theme="dark"] .btn-danger:hover {
+    background-color: var(--dark-danger-hover);
+    border-color: var(--dark-danger-hover);
+}
+
+.btn-outline-secondary {
+    border-color: var(--light-secondary);
+    color: var(--light-text);
+    background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--light-secondary);
+    color: white;
+    border-color: var(--light-secondary);
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary {
+    border-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary:hover {
+    background-color: var(--dark-secondary);
+    color: white;
+    border-color: var(--dark-secondary);
+}
+
+a {
+    color: var(--light-link);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--light-primary-hover);
+    text-decoration: underline;
+}
+
+[data-bs-theme="dark"] a {
+    color: var(--dark-link);
+}
+
+[data-bs-theme="dark"] a:hover {
+    color: var(--dark-primary-hover);
+}
+
+.message {
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.message.success {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: var(--light-success);
+    border: 1px solid var(--light-success);
+}
+
+.message.error {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: var(--light-danger);
+    border: 1px solid var(--light-danger);
+}
+
+[data-bs-theme="dark"] .message.success {
+    background-color: rgba(46, 204, 113, 0.25);
+    color: var(--dark-success-hover);
+}
+
+[data-bs-theme="dark"] .message.error {
+    background-color: rgba(231, 76, 60, 0.25);
+    color: var(--dark-danger-hover);
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid var(--light-border);
+    box-shadow: 0 2px 8px var(--light-shadow);
+}
+
+[data-bs-theme="dark"] #map {
+    border: 2px solid var(--dark-border);
+    box-shadow: 0 2px 8px var(--dark-shadow);
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid var(--light-border);
+    background-color: var(--light-card-bg);
+    color: var(--light-text);
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+}
+
+.form-control::placeholder {
+    color: var(--light-text);
+    opacity: 0.6;
+}
+
+[data-bs-theme="dark"] .form-control {
+    border: 1px solid var(--dark-border);
+    background-color: var(--dark-card-bg);
+    color: var(--dark-text);
+}
+
+[data-bs-theme="dark"] .form-control::placeholder {
+    color: var(--dark-text);
+    opacity: 0.6;
+}
+
+.form-label {
+    color: var(--light-text);
+    font-weight: 500;
+}
+
+[data-bs-theme="dark"] .form-label {
+    color: var(--dark-text);
+}
+
+h2, h3, h4, h5, h6 {
+    color: var(--light-text);
+    transition: color 0.4s ease;
+}
+
+[data-bs-theme="dark"] h2, [data-bs-theme="dark"] h3, [data-bs-theme="dark"] h4, [data-bs-theme="dark"] h5, [data-bs-theme="dark"] h6 {
+    color: var(--dark-text);
+}
+
     </style>
 </head>
 <body data-bs-theme="light">
@@ -237,16 +325,16 @@
     </div>
 
     <div class="card p-4 shadow-sm mb-5">
-        <h3 class="mb-3">Căută Vremea și Calitatea Aerului</h3>
+        <h3 class="mb-3">Search Weather and Air Quality</h3>
         <div class="row g-3">
             <div class="col-md-5">
-                <input type="text" id="publicCity" class="form-control" placeholder="Oraș" />
+                <input type="text" id="publicCity" class="form-control" placeholder="City" />
             </div>
             <div class="col-md-5">
-                <input type="text" id="publicCountry" class="form-control" placeholder="Țară" />
+                <input type="text" id="publicCountry" class="form-control" placeholder="Country" />
             </div>
             <div class="col-md-2">
-                <button id="fetchPublicWeatherBtn" class="btn btn-primary w-100">Căută Vremea</button>
+                <button id="fetchPublicWeatherBtn" class="btn btn-primary w-100">Search Weather</button>
             </div>
         </div>
         <div id="publicWeatherResults" class="mt-4">
@@ -258,36 +346,36 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="loginSignupModalLabel">Autentificare / Înregistrare</h5>
+                    <h5 class="modal-title" id="loginSignupModalLabel">Login / Register</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="loginForm">
                         <h4 class="mb-3">Login</h4>
                         <div class="mb-3">
-                            <label for="username" class="form-label">Nume utilizator</label>
+                            <label for="username" class="form-label">Username</label>
                             <input type="text" id="username" class="form-control" required />
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Parolă</label>
+                            <label for="password" class="form-label">Password</label>
                             <input type="password" id="password" class="form-control" required />
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Login</button>
-                        <p class="mt-3 text-center">Nu ai cont? <a href="#" id="showSignup">Înregistrează-te aici</a></p>
+                        <p class="mt-3 text-center">Don't have an account? <a href="#" id="showSignup">Register here</a></p>
                     </form>
 
                     <form id="signupForm" style="display:none;">
-                        <h4 class="mb-3">Înregistrare</h4>
+                        <h4 class="mb-3">Register</h4>
                         <div class="mb-3">
-                            <label for="su_username" class="form-label">Nume utilizator</label>
+                            <label for="su_username" class="form-label">Username</label>
                             <input type="text" id="su_username" class="form-control" required />
                         </div>
                         <div class="mb-3">
-                            <label for="su_password" class="form-label">Parolă</label>
+                            <label for="su_password" class="form-label">Password</label>
                             <input type="password" id="su_password" class="form-control" required />
                         </div>
-                        <button type="submit" class="btn btn-success w-100">Înregistrează-te</button>
-                        <button type="button" id="cancelSignup" class="btn btn-secondary mt-2 w-100">Anulează</button>
+                        <button type="submit" class="btn btn-success w-100">Register</button>
+                        <button type="button" id="cancelSignup" class="btn btn-secondary mt-2 w-100">Cancel</button>
                     </form>
 
                     <div id="message" class="message mt-3" style="display: none;"></div>
@@ -371,7 +459,7 @@
         if(res.ok) {
             window.location.href = '/dashboard'; // Redirect to dashboard on successful login
         } else {
-            showMessage(data.error || 'Eroare autentificare', 'error');
+            showMessage(data.error || 'Login error', 'error');
         }
     });
 
@@ -386,11 +474,11 @@
         });
         const data = await res.json();
         if(res.ok) {
-            showMessage('Cont creat! Te poți autentifica acum.', 'success');
+            showMessage('Account created! You can now log in.', 'success');
             signupForm.style.display = 'none';
             loginForm.style.display = 'block';
         } else {
-            showMessage(data.error || 'Eroare înregistrare', 'error');
+            showMessage(data.error || 'Registration error', 'error');
         }
     });
 
@@ -400,11 +488,11 @@
         const country = publicCountryInput.value.trim();
 
         if (!city || !country) {
-            publicWeatherResultsDiv.innerHTML = '<div class="alert alert-warning">Vă rugăm introduceți orașul și țara.</div>';
+            publicWeatherResultsDiv.innerHTML = '<div class="alert alert-warning">Please enter both city and country.</div>';
             return;
         }
 
-        publicWeatherResultsDiv.innerHTML = '<div class="text-center text-muted">Se încarcă datele...</div>';
+        publicWeatherResultsDiv.innerHTML = '<div class="text-center text-muted">Loading data...</div>';
 
         try {
             const res = await fetch(`/public_weather/${encodeURIComponent(city)}/${encodeURIComponent(country)}`);
@@ -413,15 +501,15 @@
             if (res.ok) {
                 displayWeatherResults(data);
             } else {
-                publicWeatherResultsDiv.innerHTML = `<div class="alert alert-danger">${data.error || 'Nu s-au putut prelua datele meteo.'}</div>`;
+                publicWeatherResultsDiv.innerHTML = `<div class="alert alert-danger">${data.error || 'Could not retrieve weather data.'}</div>`;
                 if (res.status === 401) {
-                    showMessage('Pentru a salva sau accesa funcționalități avansate, vă rugăm să vă autentificați.', 'info');
+                    showMessage('To save or access advanced features, please log in.', 'info');
                     loginSignupModal.show();
                 }
             }
         } catch (error) {
             console.error('Error fetching public weather:', error);
-            publicWeatherResultsDiv.innerHTML = '<div class="alert alert-danger">A apărut o eroare la comunicarea cu serverul.</div>';
+            publicWeatherResultsDiv.innerHTML = '<div class="alert alert-danger">An error occurred communicating with the server.</div>';
         }
     });
 
@@ -430,11 +518,11 @@
             <div class="card mt-3">
                 <div class="card-body">
                     <h5 class="card-title">${data.city}, ${data.country}</h5>
-                    <p class="card-text"><strong>Temperatură:</strong> ${data.temperature !== undefined ? data.temperature.toFixed(1) + '°C' : 'N/A'}</p>
-                    <p class="card-text"><strong>Umiditate:</strong> ${data.humidity !== undefined ? data.humidity + '%' : 'N/A'}</p>
-                    <p class="card-text"><strong>Presiune:</strong> ${data.pressure !== undefined ? data.pressure + ' hPa' : 'N/A'}</p>
-                    <p class="card-text"><strong>Condiții:</strong> ${data.condition || 'N/A'}</p>
-                    <h6>Calitatea Aerului (µg/m³):</h6>
+                    <p class="card-text"><strong>Temperature:</strong> ${data.temperature !== undefined ? data.temperature.toFixed(1) + '°C' : 'N/A'}</p>
+                    <p class="card-text"><strong>Humidity:</strong> ${data.humidity !== undefined ? data.humidity + '%' : 'N/A'}</p>
+                    <p class="card-text"><strong>Pressure:</strong> ${data.pressure !== undefined ? data.pressure + ' hPa' : 'N/A'}</p>
+                    <p class="card-text"><strong>Conditions:</strong> ${data.condition || 'N/A'}</p>
+                    <h6>Air Quality (µg/m³):</h6>
                     <ul>
                         <li>CO: ${data.co !== undefined ? data.co.toFixed(2) : 'N/A'}</li>
                         <li>NO2: ${data.no2 !== undefined ? data.no2.toFixed(2) : 'N/A'}</li>
@@ -445,7 +533,7 @@
                     </ul>
                 </div>
             </div>
-            <p class="mt-3 text-muted">Vrei să salvezi aceste măsurători sau să accesezi statistici avansate? <a href="#" id="promptLoginLink">Autentifică-te</a>!</p>
+            <p class="mt-3 text-muted">Want to save these measurements or access advanced statistics? <a href="#" id="promptLoginLink">Log in</a>!</p>
         `;
         publicWeatherResultsDiv.innerHTML = content;
 
@@ -473,7 +561,7 @@
                 map.remove(); // Remove map if coordinates are not available
                 map = null;
             }
-            document.getElementById('map').innerHTML = '<div class="alert alert-info">Coordonatele nu sunt disponibile pentru a afișa harta.</div>';
+            document.getElementById('map').innerHTML = '<div class="alert alert-info">Coordinates are not available to display the map.</div>';
         }
     }
 </script>
